@@ -41,8 +41,7 @@ _model = None
 def get_gemini_model():
     """Initialize and return Gemini model (lazy load)."""
     global _model
-    if _model is not None:
-        return _model
+    # Removed caching to ensure the latest model is loaded after code update
 
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
@@ -54,7 +53,9 @@ def get_gemini_model():
         genai.configure(api_key=api_key)
         _model = genai.GenerativeModel("gemini-2.5-flash")
         return _model
-    except Exception:
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
         return None
 
 
@@ -82,7 +83,9 @@ def call_echo(prompt: str, system_context: str = "", chat_history: list = None) 
         # Enforce brevity
         sentences = text.replace("\n", " ").split(". ")
         return ". ".join(sentences[:3]).strip()
-    except Exception:
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
         return _fallback_response(prompt)
 
 
