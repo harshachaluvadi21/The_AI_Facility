@@ -45,6 +45,7 @@ h1, h2, h3 {
 p, label, .stMarkdown {
     font-family: 'Share Tech Mono', monospace;
     color: #c8ffc8;
+    font-size: 0.85rem !important;
 }
 
 /* Ensure any explicit material icons override the default */
@@ -136,7 +137,7 @@ p, label, .stMarkdown {
     background: linear-gradient(90deg, #001a0a88, transparent);
     font-family: 'Share Tech Mono', monospace;
     color: #a8ffa8;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     line-height: 1.6;
 }
 
@@ -223,6 +224,7 @@ section[data-testid="stSidebar"] .stMarkdown {
     border: 1px solid #00ff4155 !important;
     color: var(--neon-green) !important;
     font-family: 'Share Tech Mono', monospace !important;
+    font-size: 0.85rem !important;
 }
 
 /* Keep input grouped under the puzzle panel */
