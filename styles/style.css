@@ -42,13 +42,13 @@ h1, h2, h3 {
     letter-spacing: 0.15em;
 }
 
-p, span:not(.material-symbols-rounded), label, .stMarkdown {
+p, label, .stMarkdown {
     font-family: 'Share Tech Mono', monospace;
     color: #c8ffc8;
 }
 
-/* Ensure Material Icons render correctly */
-span.material-symbols-rounded {
+/* Ensure any explicit material icons override the default */
+.material-symbols-rounded {
     font-family: 'Material Symbols Rounded' !important;
 }
 
