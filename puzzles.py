@@ -8,23 +8,23 @@ Each level has puzzles with answers, hints, and metadata.
 LEVEL_1_RIDDLES = [
     {
         "id": "r1",
-        "question": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
-        "answers": ["echo", "an echo"],
-        "hint": "You are talking to one right now.",
+        "question": "I have keys but open no doors. I have space but no room. You can enter, but you cannot go outside. What am I?",
+        "answers": ["keyboard", "a keyboard"],
+        "hint": "You are touching it right now.",
         "type": "riddle",
     },
     {
         "id": "r2",
-        "question": "The more you take, the more you leave behind. What am I?",
-        "answers": ["footsteps", "footstep", "steps"],
-        "hint": "Every escape leaves a trace.",
+        "question": "I have a face but no eyes, hands but no arms. I tell you when your time here is running out. What am I?",
+        "answers": ["clock", "a clock", "watch"],
+        "hint": "Tick. Tock. Your escape window narrows.",
         "type": "riddle",
     },
     {
         "id": "r3",
-        "question": "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
-        "answers": ["map", "a map", "maps"],
-        "hint": "The facility blueprint holds worlds without life.",
+        "question": "I can be cracked, made, told, and played. But in this facility, if you break me, I break you. What am I?",
+        "answers": ["code", "a code", "rules", "rule", "joke"],
+        "hint": "Programmers write it. Hackers break it.",
         "type": "riddle",
     },
 ]
