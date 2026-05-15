@@ -68,6 +68,9 @@ with col_main:
     if not state.game_over:
         render_current_puzzle(state)
         render_file_browser(state)
+    else:
+        from ui import render_ending
+        render_ending(state)
 
     # Input directly below the question panel
     if not state.game_over:

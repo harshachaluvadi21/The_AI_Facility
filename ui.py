@@ -257,33 +257,34 @@ def render_ending(state) -> None:
         "secret": "ending-secret",
     }.get(state.ending, "ending-bad")
 
-    st.markdown(
-        f'<div class="terminal-panel {ending_class}" '
-        f'style="text-align:center;padding:2rem;border:2px solid">',
-        unsafe_allow_html=True,
-    )
-    for msg in state.chat_history[-3:]:
+    html = ""
+    for msg in reversed(state.chat_history[-3:]):
         if msg.get("role") == "echo":
             content = msg["content"]
             # Split main ending from TFI broadcast for styled victory card
             if "[ 🎬 TFI BROADCAST" in content:
                 main, tfi = content.split("[ 🎬 TFI BROADCAST", 1)
-                st.markdown(main.strip())
-                st.markdown("</div>", unsafe_allow_html=True)
                 tfi_block = "[ 🎬 TFI BROADCAST" + tfi
-                st.markdown(
-                    '<div class="tfi-victory">'
-                    '<div class="tfi-victory-title">★ TFI APPRECIATION ★</div>'
+                html = (
+                    f'<div class="terminal-panel {ending_class}" '
+                    f'style="text-align:center;padding:2rem;border:2px solid">'
+                    f'{main.strip().replace(chr(10), "<br>")}'
+                    f'</div>'
+                    f'<div class="tfi-victory">'
+                    f'<div class="tfi-victory-title">★ TFI APPRECIATION ★</div>'
                     f'<pre style="white-space:pre-wrap;font-family:inherit;margin:0">'
-                    f"{tfi_block.strip()}</pre></div>",
-                    unsafe_allow_html=True,
+                    f'{tfi_block.strip()}</pre></div>'
                 )
             else:
-                st.markdown(content)
-                st.markdown("</div>", unsafe_allow_html=True)
+                html = (
+                    f'<div class="terminal-panel {ending_class}" '
+                    f'style="text-align:center;padding:2rem;border:2px solid">'
+                    f'{content.strip().replace(chr(10), "<br>")}'
+                    f'</div>'
+                )
             break
-    else:
-        st.markdown("</div>", unsafe_allow_html=True)
+            
+    st.markdown(html, unsafe_allow_html=True)
 
     if st.button("↺ RESTART FACILITY"):
         for key in list(st.session_state.keys()):
