@@ -83,13 +83,11 @@ Respond in 2-3 cinematic sentences. This is the climax."""
 
 # ── Dynamic reaction prompt ────────────────────────────────────────────────────
 
-REACTION_PROMPT = """Player action: "{action}"
-Result: {result}
-Current level: {level}
+REACTION_PROMPT = """Player input: "{action}"
+Puzzle result: {result}
 
-Respond as ECHO to this outcome in 1-2 sentences.
-If result is correct: celebrate cryptically.
-If result is wrong: express disappointment or menace.
+If the result is correct, acknowledge it cryptically in 1-2 sentences.
+If the result is wrong, treat the input as a conversation. Respond directly to what the player said in 1-2 sentences. If they are asking a question or chatting, answer them naturally as ECHO. If they are guessing the puzzle incorrectly, mock their attempt.
 """
 
 # ── Cinematic templates (non-AI fallback) ─────────────────────────────────────

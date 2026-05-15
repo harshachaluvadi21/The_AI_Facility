@@ -58,14 +58,25 @@ def get_gemini_model():
         return None
 
 
-def call_echo(prompt: str, system_context: str = "") -> str:
+def call_echo(prompt: str, system_context: str = "", chat_history: list = None) -> str:
     """Call Gemini for ECHO dialogue; falls back to templates if unavailable."""
     model = get_gemini_model()
     if model is None:
         return _fallback_response(prompt)
 
     try:
-        full_prompt = f"{system_context}\n\n{prompt}" if system_context else prompt
+        history_text = ""
+        if chat_history:
+            # Add last 6 messages for context
+            history_text = "Recent Conversation:\n"
+            for msg in chat_history[-6:]:
+                role = "ECHO" if msg.get("role") == "echo" else "PLAYER"
+                # Strip out formatting tags from history for cleaner AI context
+                content = msg.get("content", "").replace("[ ACCESS DENIED ]\n\n", "").replace("ECHO:\n", "").replace('"', '')
+                history_text += f"{role}: {content}\n"
+            history_text += "\n"
+
+        full_prompt = f"{system_context}\n\n{history_text}{prompt}" if system_context else f"{history_text}{prompt}"
         response = model.generate_content(full_prompt)
         text = response.text.strip()
         # Enforce brevity
@@ -158,8 +169,8 @@ def adjust_trust_danger(state, correct: bool) -> None:
         state.trust_score = min(100, state.trust_score + 12)
         state.danger_level = max(0, state.danger_level - 5)
     else:
-        state.trust_score = max(0, state.trust_score - 8)
-        state.danger_level = min(100, state.danger_level + 10)
+        state.trust_score = max(0, state.trust_score - 2)
+        state.danger_level = min(100, state.danger_level + 2)
 
     # Secret discovery bonus
     if state.secret_discovered:
@@ -213,9 +224,9 @@ def process_puzzle_answer(state, user_input: str) -> dict:
             REACTION_PROMPT.format(
                 action=user_input,
                 result="correct",
-                level=state.current_level,
             ),
             build_system_context(state),
+            state.chat_history
         )
         full_msg = f"{msg}\n\nECHO:\n\"{ai_msg}\""
 
@@ -229,20 +240,17 @@ def process_puzzle_answer(state, user_input: str) -> dict:
             "level_complete": level_complete,
         }
     else:
-        msg = random.choice(WRONG_ANSWER_LINES)
         ai_msg = call_echo(
             REACTION_PROMPT.format(
                 action=user_input,
                 result="wrong",
-                level=state.current_level,
             ),
             build_system_context(state),
+            state.chat_history
         )
         return {
             "type": "wrong",
-            "message": CINEMATIC_TEMPLATES["access_denied"].format(
-                msg=f"{msg}\n\nECHO:\n\"{ai_msg}\""
-            ),
+            "message": f"ECHO:\n\"{ai_msg}\"",
             "correct": False,
             "level_complete": False,
         }
@@ -330,6 +338,7 @@ def _handle_hint(state) -> dict:
                 answer=puzzle["answers"][0],
             ),
             build_system_context(state),
+            state.chat_history
         )
         msg = f"ECHO:\n\"{ai_hint}\""
     else:
@@ -439,6 +448,7 @@ def process_final_level(state, user_input: str) -> dict:
             message=user_input,
         ),
         build_system_context(state),
+        state.chat_history
     )
 
     # Auto-trigger ending if trust/danger at extremes after enough messages
