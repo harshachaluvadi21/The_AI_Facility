@@ -42,9 +42,14 @@ h1, h2, h3 {
     letter-spacing: 0.15em;
 }
 
-p, span, label, .stMarkdown {
-    font-family: 'Share Tech Mono', monospace !important;
-    color: #c8ffc8 !important;
+p, span:not(.material-symbols-rounded), label, .stMarkdown {
+    font-family: 'Share Tech Mono', monospace;
+    color: #c8ffc8;
+}
+
+/* Ensure Material Icons render correctly */
+span.material-symbols-rounded {
+    font-family: 'Material Symbols Rounded' !important;
 }
 
 /* Title block */
